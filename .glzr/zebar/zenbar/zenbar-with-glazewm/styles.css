@@ -1,0 +1,102 @@
+/**
+ * Import the Nerdfonts icon font.
+ * Ref https://www.nerdfonts.com/cheat-sheet for a cheatsheet of available Nerdfonts icons.
+ */
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
+
+body {
+  color: rgb(255 255 255 / 90%);
+  background-color: #1C1C1C;
+  font-family: ui-monospace, monospace;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.top-bar-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  height: 100vh;
+  gap: 8px;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.left {
+  justify-self: start;
+  margin-left: 16px;
+}
+
+.center {
+  justify-self: center;
+  overflow: hidden;
+}
+
+.right {
+  justify-self: end;
+  margin-right: 16px;
+}
+
+.workspaces-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.workspace {
+  border: unset;
+  background: #1C1C1C;
+  color: white;
+
+  &.displayed,
+  &.focused {
+    border-radius: 2px;
+    border: 1px solid white;
+  }
+
+  &:not(.displayed):not(.focused):hover {
+    border-radius: 2px;
+    background: #3a3a3a;
+    cursor: pointer;
+  }
+}
+
+.tiling-direction {
+  border: unset;
+  padding: 4px;
+  background: #1c1c1c;
+  color: white;
+  cursor: pointer;
+  border-radius: 2px;
+
+  &:hover {
+    border-radius: 2px;
+    background-color: #3a3a3a;
+  }
+}
+
+.cpu,
+.battery,
+.memory {
+  display: flex;
+  gap: 4px;
+}
+
+.datetime {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 14px;
+}
