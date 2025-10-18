@@ -9,7 +9,7 @@ function dot {
 }
 
 Set-PSReadLineOption -EditMode Vi
-Write-Host -NoNewline "`e[6 q"
+Write-Host -NoNewline "`e[5 q"
 
 function OnViModeChange($mode) {
     switch ($mode) {
@@ -19,7 +19,7 @@ function OnViModeChange($mode) {
         }
         'Insert' {
             # INSERT mode: blinking bar cursor
-            Write-Host -NoNewline "`e[6 q"
+            Write-Host -NoNewline "`e[5 q"
         }
     }
 }
