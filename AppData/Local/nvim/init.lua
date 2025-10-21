@@ -1,67 +1,89 @@
 -- ================================
 --  Neovim Lua Configuration
 -- ================================
+if vim.g.vscode then
+    -- Set leader key (Space)
+    vim.g.mapleader = " "
+    vim.g.maplocalleader = "\\"
 
--- Set leader key (Space)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+    -- leader key commands
+    -- vim.keymap.set('n', '<leader>v', ':e C:/Users/Jan-Marius/AppData/Local/nvim/init.lua<CR>', { noremap = true, silent = true })
 
--- Reload config with <leader>s
-vim.keymap.set("n", "<leader>s", ":source $MYVIMRC<CR>", { noremap = true, silent = true, desc = "Reload init.lua" })
+    -- redo with shift+u instead of ctrl+r
+    vim.keymap.set('n', 'U', '<C-r>')
+    -- clear search highlighting
+    vim.keymap.set('n', '<Esc>', ':nohlsearch<cr>')
 
--- Use PowerShell as shell
-vim.opt.shell = "pwsh"
-vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
-vim.opt.shellquote = ""
-vim.opt.shellxquote = ""
+    -- sync system clipboard
+    vim.opt.clipboard = 'unnamedplus'
 
--- Enable syntax highlighting (Neovim enables this by default, but included for clarity)
-vim.cmd.syntax("enable")
+    -- search ignoring case
+    vim.opt.ignorecase = true
 
--- Colors & appearance
-vim.opt.termguicolors = true
-vim.opt.colorcolumn = "100"
+    -- disable "ignorecase" option if the search pattern contains upper case characters
+    vim.opt.smartcase = true
 
--- Editor UI
-vim.opt.number = true
-vim.opt.relativenumber = true
+else
 
--- Clipboard integration (syncs y/p with Windows clipboard)
-vim.opt.clipboard = "unnamedplus"
+    -- Reload config with <leader>s
+    vim.keymap.set("n", "<leader>s", ":source $MYVIMRC<CR>", {
+        noremap = true,
+        silent = true,
+        desc = "Reload init.lua"
+    })
 
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
+    -- Use PowerShell as shell
+    vim.opt.shell = "pwsh"
+    vim.opt.shellcmdflag = "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command"
+    vim.opt.shellquote = ""
+    vim.opt.shellxquote = ""
+
+    -- Enable syntax highlighting (Neovim enables this by default, but included for clarity)
+    vim.cmd.syntax("enable")
+
+    -- Colors & appearance
+    vim.opt.termguicolors = true
+    vim.opt.colorcolumn = "100"
+
+    -- Editor UI
+    vim.opt.number = true
+    vim.opt.relativenumber = true
+
+    -- Clipboard integration (syncs y/p with Windows clipboard)
+    vim.opt.clipboard = "unnamedplus"
+
+    -- Bootstrap lazy.nvim
+    local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+    if not (vim.uv or vim.loop).fs_stat(lazypath) then
+        local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+        local out = vim.fn.system({"git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath})
+        if vim.v.shell_error ~= 0 then
+            vim.api.nvim_echo({{"Failed to clone lazy.nvim:\n", "ErrorMsg"}, {out, "WarningMsg"},
+                               {"\nPress any key to exit..."}}, true, {})
+            vim.fn.getchar()
+            os.exit(1)
+        end
+    end
+    vim.opt.rtp:prepend(lazypath)
+
+    -- Make sure to setup `mapleader` and `maplocalleader` before
+    -- loading lazy.nvim so that mappings are correct.
+    -- This is also a good place to setup other settings (vim.opt)
+
+    -- Setup lazy.nvim
+    require("lazy").setup({
+        spec = { -- add your plugins here
+        {"joshdick/onedark.vim"}},
+        -- Configure any other settings here. See the documentation for more details.
+        -- colorscheme that will be used when installing plugins.
+        install = {
+            colorscheme = {"onedark"}
+        },
+        -- automatically check for plugin updates
+        checker = {
+            enabled = true
+        }
+    })
+
+    vim.cmd.colorscheme("onedark")
 end
-vim.opt.rtp:prepend(lazypath)
-
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-
--- Setup lazy.nvim
-require("lazy").setup({
-  spec = {
-    -- add your plugins here
-    { "joshdick/onedark.vim" },
-  },
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "onedark" } },
-  -- automatically check for plugin updates
-  checker = { enabled = true },
-})
-
-
-vim.cmd.colorscheme("onedark")
